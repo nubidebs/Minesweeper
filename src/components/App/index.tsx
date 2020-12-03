@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react";
 import Button from "../Button";
 import NumberDisplay from "../NumberDisplay";
 import {generateCells} from "../../utils";
-import {Cell, CellState, Face} from '../../types';
+import {Cell, CellState, CellValue, Face} from '../../types';
 
 import "./App.scss";
 
@@ -12,6 +12,8 @@ const [face, setFace] = useState<Face>(Face.smile);
 const [time, setTime] = useState<number>(0);
 const [live, setLive] = useState<boolean>(false);
 const [bombCounter, setBombCounter] = useState<number>(10);
+const [hasLost, setHasLost] = useState<boolean>(false);
+const [hasWon, setHasWon] = useState<boolean>(false);
 
 // Controls EventListeners 
 useEffect(() => {
@@ -49,14 +51,48 @@ useEffect(() => {
   }, [live, time]);
 
   const handleClick = (rowParam: number, colParam: number) =>(): void =>{
-
+    let newCells = cells.slice();
+    
     //start game
     if (!live){
         setLive(true)
     }
+
+
+    const currentCell = newCells[rowParam][colParam];
+
+    // 1. if a flagged cell or already revealed cell is clicked -> do nothing
+    if ([CellState.flagged, CellState.visible].includes(currentCell.state)) {
+      return;
+    }
+
+    // 2. if cell with  bomb is clicked -> game over
+    if (currentCell.value === CellValue.bomb) {
+      setHasLost(true);
+      newCells[rowParam][colParam].red = true;
+      //newCells = showAllBombs();
+      setCells(newCells);
+      return;
+
+    // 3. if empty is clicked -> reveal all empty cells
+    } else if (currentCell.value === CellValue.none) {
+      //newCells = openMultipleCells(newCells, rowParam, colParam);
+    } else {
+    
+    // 4. if a number is clicked -> reveal the number
+      newCells[rowParam][colParam].state = CellState.visible;
+    }
   }
 
-  // handle right click -> set flag if cell is not revealed (visible)
+  
+
+
+
+
+
+  
+  
+// handle RIGHT CLICK -> set flags 🚩 
 const handleCellContext = (
     rowParam: number,
     colParam: number
@@ -67,14 +103,17 @@ const handleCellContext = (
     if (!live){
         return
     }
+
     const currentCells = cells.slice();
     const currentCell = cells[rowParam][colParam];
 
-    // if content cell revealed, do nothing
+    
+
+    // 1. if content cell revealed, do nothing
     if (currentCell.state === CellState.visible) {
         return;
 
-    // if content cell still hidden, add a flag
+    // 2. if content cell still hidden, add a flag
     } else if (currentCell.state === CellState.open) {
 
         if (bombCounter > 0){
@@ -85,7 +124,7 @@ const handleCellContext = (
         }
         return
 
-    // if cell is flagged, the flag is removed
+    // 3. if cell is flagged, the flag is removed
     } else if (currentCell.state === CellState.flagged) {
         if (bombCounter < 10){
             currentCells[rowParam][colParam].state = CellState.open;
@@ -97,7 +136,7 @@ const handleCellContext = (
       }
 }
 
-  // Reset Game
+  // Reset Game -> 🤓
   const handleFaceClick = (): void => {
     setLive(false);
     setTime(0);
@@ -106,8 +145,9 @@ const handleCellContext = (
     // setHasWon(false);
   };
 
+  // Create matrix
 const renderCells = (): React.ReactNode => {
-return cells.map((row, rowIndex) => row.map((cell, colIndex)=>   <Button
+return cells.map((row, rowIndex) => row.map((cell, colIndex)=> <Button
     col={colIndex}
     key={`${rowIndex}-${colIndex}`}
     row={rowIndex}
@@ -117,16 +157,22 @@ return cells.map((row, rowIndex) => row.map((cell, colIndex)=>   <Button
     onContext={handleCellContext}
 />))
 }
+
     return (
         <div className="App">
              <div className="Header">
-                 {/* number of bombs */}
+                 {/* number of bombs display */}
                  <NumberDisplay value={bombCounter}/>
+
+                  {/* Face button */}
                  <div className='face' onClick={handleFaceClick}><span role="img" aria-label='face'>{face}</span></div>
-                 {/* timer */}
+
+                 {/* timer display*/}
                  <NumberDisplay value={time}/>
                  </div>
+
              <div className="Body">
+                  {/* matrix */}
                  {renderCells()}
              </div>
         </div>
