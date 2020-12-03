@@ -1,5 +1,5 @@
 export enum CellValue {
-    none,
+    none, //empty
     one,
     two,
     three,
@@ -8,19 +8,19 @@ export enum CellValue {
     six,
     seven,
     eight,
-    bomb
+    bomb // contains bomb
   }
 
   export enum CellState {
-    open,
-    visible,
-    flagged
+    open, // content cell not revealed
+    visible, // content cell revealed
+    flagged // added flag
   }
   
   export type Cell = { value: CellValue; state: CellState; red?: boolean };
   
   export enum Face {
-    smile = "🤓",
+    smile = "🤓", 
     oh = "😮",
     lost = "😵",
     won = "😎"
