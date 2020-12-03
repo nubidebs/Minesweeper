@@ -70,10 +70,11 @@ const handleCellContext = (
     const currentCells = cells.slice();
     const currentCell = cells[rowParam][colParam];
 
-    // content cell revealed
+    // if content cell revealed, do nothing
     if (currentCell.state === CellState.visible) {
         return;
-    // content cell still hidden
+
+    // if content cell still hidden, add a flag
     } else if (currentCell.state === CellState.open) {
 
         if (bombCounter > 0){
@@ -83,8 +84,9 @@ const handleCellContext = (
             setBombCounter(bombCounter - 1);
         }
         return
-    // if cell is flagged
-      } else if (currentCell.state === CellState.flagged) {
+
+    // if cell is flagged, the flag is removed
+    } else if (currentCell.state === CellState.flagged) {
         if (bombCounter < 10){
             currentCells[rowParam][colParam].state = CellState.open;
             setCells(currentCells);
