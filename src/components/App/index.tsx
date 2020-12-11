@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import Button from "../Button";
 import NumberDisplay from "../NumberDisplay";
-import {generateCells} from "../../utils";
+import {generateCells, openMultipleCells} from "../../utils";
 import {Cell, CellState, CellValue, Face} from '../../types';
 
 import "./App.scss";
@@ -76,7 +76,7 @@ useEffect(() => {
 
     // 3. if empty is clicked -> reveal all empty cells
     } else if (currentCell.value === CellValue.none) {
-      //newCells = openMultipleCells(newCells, rowParam, colParam);
+      newCells = openMultipleCells(newCells, rowParam, colParam);
     } else {
     
     // 4. if a number is clicked -> reveal the number
