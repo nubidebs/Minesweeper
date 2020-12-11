@@ -138,6 +138,7 @@ export const generateCells = (): Cell[][]=>{
  return cells;
 };
 
+// spread the opening wave to adiacent cells. Always check if cell is already visible or flagged and check what is the result after you make it visible: bomb, number or empty cell
 export const openMultipleCells = (
   cells: Cell[][],
   rowParam: number,
@@ -145,6 +146,7 @@ export const openMultipleCells = (
 ): Cell[][] => {
   const currentCell = cells[rowParam][colParam];
 
+  
   if (
     currentCell.state === CellState.visible ||
     currentCell.state === CellState.flagged
