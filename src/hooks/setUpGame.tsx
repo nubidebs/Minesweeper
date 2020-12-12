@@ -74,9 +74,10 @@ useEffect(() => {
     const currentCell = newCells[rowParam][colParam];
 
     // 1. if a flagged cell or already revealed cell is clicked -> do nothing
-    if ([CellState.flagged, CellState.visible].includes(currentCell.state)) {
+    if ([CellState.flagged, CellState.visible].includes(currentCell.state) || hasLost ) {
       return;
     }
+
 
     // 2. if cell with  bomb is clicked -> game over
     if (currentCell.value === CellValue.bomb) {

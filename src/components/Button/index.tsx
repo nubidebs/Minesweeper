@@ -22,6 +22,7 @@ const Button: React.FC<ButtonProps> = ({
   state,
   value
 }) => {
+  
   const renderContent = (): React.ReactNode => {
     if (state === CellState.visible) {
       if (value === CellValue.bomb) {
