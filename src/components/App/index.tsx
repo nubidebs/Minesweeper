@@ -1,12 +1,10 @@
- import React from "react";
+import React from "react";
 import { SetUpGame } from "../../hooks/setUpGame";
-// import Button from "../Button";
- import NumberDisplay from "../NumberDisplay";
-// import {generateCells, openMultipleCells} from "../../utils";
-// import {Cell, CellState, CellValue, Face} from '../../types';
+import NumberDisplay from "../NumberDisplay";
+
 
 import "./App.scss";
-// import { MAX_ROWS, MAX_COLS } from "../../constants";
+
 
 const App: React.FC = () => {
 
