@@ -5,6 +5,7 @@ import {generateCells, openMultipleCells} from "../../utils";
 import {Cell, CellState, CellValue, Face} from '../../types';
 
 import "./App.scss";
+import { MAX_ROWS, MAX_COLS } from "../../constants";
 
 const App: React.FC = () => {
 const [cells, setCells] = useState<Cell[][]>(generateCells());
@@ -36,8 +37,7 @@ useEffect(() => {
     };
   }, []);
 
-
-  // Set timer (start, increase)
+  // useEffects to check the status of the game, timer, has win and has lost
   useEffect(() => {
     if (live && time < 999) {
       const timer = setInterval(() => {
@@ -50,14 +50,27 @@ useEffect(() => {
     }
   }, [live, time]);
 
+  useEffect(() => {
+    if (hasLost) {
+      setLive(false);
+      setFace(Face.lost);
+    }
+  }, [hasLost]);
+
+  useEffect(() => {
+    if (hasWon) {
+      setLive(false);
+      setFace(Face.won);
+    }
+  }, [hasWon]);
+
+
   const handleClick = (rowParam: number, colParam: number) =>(): void =>{
     let newCells = cells.slice();
-    
     //start game
     if (!live){
         setLive(true)
     }
-
 
     const currentCell = newCells[rowParam][colParam];
 
@@ -70,7 +83,7 @@ useEffect(() => {
     if (currentCell.value === CellValue.bomb) {
       setHasLost(true);
       newCells[rowParam][colParam].red = true;
-      //newCells = showAllBombs();
+      newCells = showAllBombs();
       setCells(newCells);
       return;
 
@@ -82,15 +95,42 @@ useEffect(() => {
     // 4. if a number is clicked -> reveal the number
       newCells[rowParam][colParam].state = CellState.visible;
     }
-  }
 
-  
+    // Check if you have won (no more open empty/number cells to click)
+    let safeOpenCellsExist = false;
+    for (let row = 0; row < MAX_ROWS; row++) {
+      for (let col = 0; col < MAX_COLS; col++) {
+        const currentCell = newCells[row][col];
 
+        if (
+          currentCell.value !== CellValue.bomb &&
+          currentCell.state === CellState.open
+        ) {
+          safeOpenCellsExist = true;
+          break;
+        }
+      }
+    }
 
+    if (!safeOpenCellsExist) {
+      // fill up all the left cells with flag to show victory
+      newCells = newCells.map(row =>
+        row.map(cell => {
+          if (cell.value === CellValue.bomb) {
+            return {
+              ...cell,
+              state: CellState.flagged
+            };
+          }
+          return cell;
+        })
+      );
+      setHasWon(true);
+    }
 
+    setCells(newCells);
+  };
 
-
-  
   
 // handle RIGHT CLICK -> set flags 🚩 
 const handleCellContext = (
@@ -141,8 +181,8 @@ const handleCellContext = (
     setLive(false);
     setTime(0);
     setCells(generateCells());
-    // setHasLost(false);
-    // setHasWon(false);
+    setHasLost(false);
+    setHasWon(false);
   };
 
   // Create matrix
@@ -155,8 +195,26 @@ return cells.map((row, rowIndex) => row.map((cell, colIndex)=> <Button
     value={cell.value}
     onClick={handleClick}
     onContext={handleCellContext}
+    red={cell.red}
 />))
 }
+
+  // Show all bombs on game over mapping through cells in matrix
+const showAllBombs = (): Cell[][] => {
+  const currentCells = cells.slice();
+  return currentCells.map(row =>
+    row.map(cell => {
+      if (cell.value === CellValue.bomb) {
+        return {
+          ...cell,
+          state: CellState.visible
+        };
+      }
+
+      return cell;
+    })
+  );
+};
 
     return (
         <div className="App">
