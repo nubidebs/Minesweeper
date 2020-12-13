@@ -1,9 +1,13 @@
 import React from 'react';
+import { useGameContext } from "../context/GameContext";
 
 import "./Navbar.scss";
 
 const Navbar: React.FC = () => {
-    return <nav className='Nav'><h1>Minesweeper</h1></nav>
+    const {isMenuVisible, setIsMenuVisible} = useGameContext()!
+    return (<nav className='Nav'>
+       <button className='Start' onClick={()=> setIsMenuVisible(!isMenuVisible) }>Start</button> 
+        </nav>)
 }
 
 export default Navbar;

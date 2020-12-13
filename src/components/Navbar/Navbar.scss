@@ -1,4 +1,18 @@
+@import "../../styles/index.scss";
+
 .Nav {
+  overflow: hidden;
+  position: fixed;
+  bottom: 0;
   width: 100vw;
-  text-align: center;
+  background-color: #c2c2c2;
+}
+
+.Start {
+  @include borders;
+  @include buttons;
+  margin: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+  z-index: 1;
 }

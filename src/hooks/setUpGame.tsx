@@ -6,7 +6,7 @@ import {Cell, CellState, CellValue, Face} from '../types';
 import { MAX_ROWS, MAX_COLS, NO_OF_BOMBS } from "../constants";
 
 
-export function SetUpGame() {
+export const SetUpGame = ()=> {
 const [cells, setCells] = useState<Cell[][]>(generateCells());
 const [face, setFace] = useState<Face>(Face.smile);
 const [time, setTime] = useState<number>(0);
