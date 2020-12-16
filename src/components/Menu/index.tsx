@@ -11,26 +11,26 @@ const Menu: React.FC = () => {
             {isMenuVisible &&
              <div className="Menu">
                  <p>NOT IN USE</p>
-                <form>
-    <div className="radio">
-      <label>
-        <input type="radio" value="option1" checked={true} />
-        Option 1
-      </label>
-    </div>
-    <div className="radio">
-      <label>
-        <input type="radio" value="option2" />
-        Option 2
-      </label>
-    </div>
-    <div className="radio">
-      <label>
-        <input type="radio" value="option3" />
-        Option 3
-      </label>
-    </div>
-  </form>
+                            <form>
+                <div className="radio">
+                    <input type="radio" name="level" value="beginner" />
+                  <label>
+                    Option 1
+                  </label>
+                </div>
+                <div className="radio">
+                    <input type="radio" name="level" value="intermediate" checked/>
+                  <label>
+                    Option 2
+                  </label>
+                </div>
+                <div className="radio">
+                    <input type="radio" name="level" value="advanced" />
+                  <label>
+                    Option 3
+                  </label>
+                </div>
+              </form>
                </div>}
             </div>
     )

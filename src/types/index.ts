@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 export enum CellValue {
     none, //empty
     one,
@@ -25,3 +27,18 @@ export enum CellValue {
     lost = "😵",
     won = "😎"
   }
+
+
+   // ==> Context Types <== //
+  export type GameContextType = {
+    isMenuVisible: boolean;
+    setIsMenuVisible: (value: boolean) => void;
+    level: string;
+    setLevel: (value: string) => void;
+  };
+
+  export 
+  type Props = {
+    children: ReactNode
+  }
+  

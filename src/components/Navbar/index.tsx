@@ -5,8 +5,9 @@ import "./Navbar.scss";
 
 const Navbar: React.FC = () => {
     const {isMenuVisible, setIsMenuVisible} = useGameContext()!
+
     return (<nav className='Nav'>
-       <button className='Start' onClick={()=> setIsMenuVisible(!isMenuVisible) }>Start</button> 
+       <button className='Start' onClick={(): void => setIsMenuVisible(!isMenuVisible) }>Start</button> 
         </nav>)
 }
 

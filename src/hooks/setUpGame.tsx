@@ -4,14 +4,16 @@ import {generateCells, openMultipleCells} from "../utils";
 import {Cell, CellState, CellValue, Face} from '../types';
 
 import { MAX_ROWS, MAX_COLS, NO_OF_BOMBS } from "../constants";
+import { useGameContext } from "../components/context/GameContext";
 
 
 export const SetUpGame = ()=> {
+const {level} = useGameContext()!
 const [cells, setCells] = useState<Cell[][]>(generateCells());
 const [face, setFace] = useState<Face>(Face.smile);
 const [time, setTime] = useState<number>(0);
 const [live, setLive] = useState<boolean>(false);
-const [bombCounter, setBombCounter] = useState<number>(NO_OF_BOMBS);
+const [bombCounter, setBombCounter] = useState<number>(10);
 const [hasLost, setHasLost] = useState<boolean>(false);
 const [hasWon, setHasWon] = useState<boolean>(false);
 
@@ -35,6 +37,8 @@ useEffect(() => {
 
     };
   }, []);
+
+
 
   // useEffects to check the status of the game, timer, has win and has lost
   useEffect(() => {
