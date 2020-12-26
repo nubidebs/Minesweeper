@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { GameWrapper } from "../context/GameContext";
 import GameBoard from "../GameBoard";
 import Menu from "../Menu";

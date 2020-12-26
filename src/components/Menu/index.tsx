@@ -4,32 +4,40 @@ import { useGameContext } from "../context/GameContext";
 import "./Menu.scss";
 
 const Menu: React.FC = () => {
-    const {isMenuVisible}= useGameContext()!
+    const {isMenuVisible, level, setLevel}= useGameContext()!
+
+   
+    console.log(level)
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+
+      setLevel((event.target as HTMLInputElement).value);
+     
+    };
 
     return (
         <div>
             {isMenuVisible &&
              <div className="Menu">
-                 <p>NOT IN USE</p>
                             <form>
                 <div className="radio">
-                    <input type="radio" name="level" value="beginner" />
+                    <input type="radio" name="level" value="beginner" 
+                   onChange={handleChange} />
                   <label>
-                    Option 1
+                    Beginner
                   </label>
                 </div>
                 <div className="radio">
-                    <input type="radio" name="level" value="intermediate" checked/>
+                    <input type="radio" name="level" value="intermediate" onChange={handleChange} />
                   <label>
-                    Option 2
+                    Intermediate
                   </label>
                 </div>
-                <div className="radio">
-                    <input type="radio" name="level" value="advanced" />
+                {/* <div className="radio">
+                    <input type="radio" name="level" value="advanced" onChange={handleChange} />
                   <label>
-                    Option 3
+                    Advanced
                   </label>
-                </div>
+                </div> */}
               </form>
                </div>}
             </div>

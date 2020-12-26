@@ -35,6 +35,7 @@ export enum CellValue {
     setIsMenuVisible: (value: boolean) => void;
     level: string;
     setLevel: (value: string) => void;
+  
   };
 
   export 

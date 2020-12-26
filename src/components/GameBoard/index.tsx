@@ -12,7 +12,7 @@ const GameBoard: React.FC = () => {
     handleFaceClick,
     face,
     time,
-    renderCells} = SetUpGame()
+    renderCells, classBody} = SetUpGame()
 
 
     return (
@@ -28,7 +28,7 @@ const GameBoard: React.FC = () => {
                  <NumberDisplay value={time}/>
                  </div>
 
-             <div className="Body">
+             <div className={classBody}>
                   {/* matrix */}
                  {renderCells()}
              </div>

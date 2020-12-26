@@ -1,8 +1,8 @@
-import { MAX_COLS, MAX_ROWS, NO_OF_BOMBS } from "../constants";
+
 import { Cell, CellValue, CellState } from "../types";
 
 
-export const generateCells = (): Cell[][]=>{
+export const generateCells = (MAX_ROWS: number, MAX_COLS:number, NO_OF_BOMBS: number): Cell[][]=>{
     let cells: Cell [][]=[];
     //create the matrix
     for (let row = 0; row < MAX_ROWS; row++){
@@ -51,7 +51,7 @@ export const generateCells = (): Cell[][]=>{
 
      let numberOfBombs = 0;
      
-     const {topLeftCell, topCell, topRightCell, leftCell, rightCell, bottomLeftCell, bottomCell, bottomRightCell} = grabAllAdjacentCells(cells, rowIndex, colIndex);
+     const {topLeftCell, topCell, topRightCell, leftCell, rightCell, bottomLeftCell, bottomCell, bottomRightCell} = grabAllAdjacentCells(cells, rowIndex, colIndex, MAX_ROWS, MAX_COLS);
 
          
      if (topLeftCell?.value === CellValue.bomb) {
@@ -94,7 +94,9 @@ export const generateCells = (): Cell[][]=>{
 const grabAllAdjacentCells = (
   cells: Cell[][],
   rowParam: number,
-  colParam: number
+  colParam: number,
+  MAX_ROWS: number,
+  MAX_COLS: number
 ): {
   topLeftCell: Cell | null;
   topCell: Cell | null;
@@ -142,7 +144,9 @@ const grabAllAdjacentCells = (
 export const openMultipleCells = (
   cells: Cell[][],
   rowParam: number,
-  colParam: number
+  colParam: number,
+  MAX_ROWS: number,
+  MAX_COLS: number,
 ): Cell[][] => {
   const currentCell = cells[rowParam][colParam];
 
@@ -166,7 +170,7 @@ export const openMultipleCells = (
     bottomLeftCell,
     bottomCell,
     bottomRightCell
-  } = grabAllAdjacentCells(cells, rowParam, colParam);
+  } = grabAllAdjacentCells(cells, rowParam, colParam, MAX_ROWS, MAX_COLS);
 
   if (
     topLeftCell?.state === CellState.open &&
@@ -174,7 +178,7 @@ export const openMultipleCells = (
   ) {
     if (topLeftCell.value === CellValue.none) {
       //reculsively call openMultipleCells to make sure the process works for all adiacent cells
-      newCells = openMultipleCells(newCells, rowParam - 1, colParam - 1);
+      newCells = openMultipleCells(newCells, rowParam - 1, colParam - 1, MAX_ROWS, MAX_COLS);
     } else {
       newCells[rowParam - 1][colParam - 1].state = CellState.visible;
     }
@@ -182,7 +186,7 @@ export const openMultipleCells = (
 
   if (topCell?.state === CellState.open && topCell.value !== CellValue.bomb) {
     if (topCell.value === CellValue.none) {
-      newCells = openMultipleCells(newCells, rowParam - 1, colParam);
+      newCells = openMultipleCells(newCells, rowParam - 1, colParam, MAX_ROWS, MAX_COLS);
     } else {
       newCells[rowParam - 1][colParam].state = CellState.visible;
     }
@@ -193,7 +197,7 @@ export const openMultipleCells = (
     topRightCell.value !== CellValue.bomb
   ) {
     if (topRightCell.value === CellValue.none) {
-      newCells = openMultipleCells(newCells, rowParam - 1, colParam + 1);
+      newCells = openMultipleCells(newCells, rowParam - 1, colParam + 1, MAX_ROWS, MAX_COLS);
     } else {
       newCells[rowParam - 1][colParam + 1].state = CellState.visible;
     }
@@ -201,7 +205,7 @@ export const openMultipleCells = (
 
   if (leftCell?.state === CellState.open && leftCell.value !== CellValue.bomb) {
     if (leftCell.value === CellValue.none) {
-      newCells = openMultipleCells(newCells, rowParam, colParam - 1);
+      newCells = openMultipleCells(newCells, rowParam, colParam - 1, MAX_ROWS, MAX_COLS);
     } else {
       newCells[rowParam][colParam - 1].state = CellState.visible;
     }
@@ -212,7 +216,7 @@ export const openMultipleCells = (
     rightCell.value !== CellValue.bomb
   ) {
     if (rightCell.value === CellValue.none) {
-      newCells = openMultipleCells(newCells, rowParam, colParam + 1);
+      newCells = openMultipleCells(newCells, rowParam, colParam + 1, MAX_ROWS, MAX_COLS);
     } else {
       newCells[rowParam][colParam + 1].state = CellState.visible;
     }
@@ -223,7 +227,7 @@ export const openMultipleCells = (
     bottomLeftCell.value !== CellValue.bomb
   ) {
     if (bottomLeftCell.value === CellValue.none) {
-      newCells = openMultipleCells(newCells, rowParam + 1, colParam - 1);
+      newCells = openMultipleCells(newCells, rowParam + 1, colParam - 1, MAX_ROWS, MAX_COLS);
     } else {
       newCells[rowParam + 1][colParam - 1].state = CellState.visible;
     }
@@ -234,7 +238,7 @@ export const openMultipleCells = (
     bottomCell.value !== CellValue.bomb
   ) {
     if (bottomCell.value === CellValue.none) {
-      newCells = openMultipleCells(newCells, rowParam + 1, colParam);
+      newCells = openMultipleCells(newCells, rowParam + 1, colParam, MAX_ROWS, MAX_COLS);
     } else {
       newCells[rowParam + 1][colParam].state = CellState.visible;
     }
@@ -245,7 +249,7 @@ export const openMultipleCells = (
     bottomRightCell.value !== CellValue.bomb
   ) {
     if (bottomRightCell.value === CellValue.none) {
-      newCells = openMultipleCells(newCells, rowParam + 1, colParam + 1);
+      newCells = openMultipleCells(newCells, rowParam + 1, colParam + 1, MAX_ROWS, MAX_COLS);
     } else {
       newCells[rowParam + 1][colParam + 1].state = CellState.visible;
     }

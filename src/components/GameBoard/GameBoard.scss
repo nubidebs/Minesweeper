@@ -17,11 +17,27 @@
   padding: 10px 12px;
 }
 
-.Body {
+.Body-beginner {
   @include borders(#7b7b7b, white);
   display: grid;
   grid-template-columns: repeat(9, 1fr);
   grid-template-rows: repeat(9, 1fr);
+  margin-top: 16px;
+}
+
+.Body-intermediate {
+  @include borders(#7b7b7b, white);
+  display: grid;
+  grid-template-columns: repeat(16, 1fr);
+  grid-template-rows: repeat(16, 1fr);
+  margin-top: 16px;
+}
+
+.Body-advanced {
+  @include borders(#7b7b7b, white);
+  display: grid;
+  grid-template-columns: repeat(30, 1fr);
+  grid-template-rows: repeat(16, 1fr);
   margin-top: 16px;
 }
 

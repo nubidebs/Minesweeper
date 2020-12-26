@@ -7,14 +7,8 @@ const GameContext = createContext<GameContextType | undefined >(undefined)
 
 export const GameWrapper =({ children }: Props) =>{
   const [isMenuVisible, setIsMenuVisible] = useState(false);
-  const [level, setLevel] = useState('intermediate')
-
-  useEffect(() => {
-    console.log('yoooooo', isMenuVisible)
-  }, []);
-
-  //add levels here
-  //async function for picking level
+  const [level, setLevel] = useState("beginner")
+ 
 
   return (
     <GameContext.Provider value={{isMenuVisible, setIsMenuVisible, level, setLevel}}>

@@ -3,19 +3,24 @@ import Button from "../components/Button";
 import {generateCells, openMultipleCells} from "../utils";
 import {Cell, CellState, CellValue, Face} from '../types';
 
-import { MAX_ROWS, MAX_COLS, NO_OF_BOMBS } from "../constants";
 import { useGameContext } from "../components/context/GameContext";
 
 
 export const SetUpGame = ()=> {
 const {level} = useGameContext()!
-const [cells, setCells] = useState<Cell[][]>(generateCells());
+const [MAX_ROWS, setMAX_ROWS]= useState<number>(9)
+const [MAX_COLS, setMAX_COLS]= useState<number>(9)
+const [NO_OF_BOMBS, setNO_OF_BOMBS]= useState<number>(10)
+const [cells, setCells] = useState<Cell[][]>(generateCells(MAX_ROWS, MAX_COLS, NO_OF_BOMBS));
 const [face, setFace] = useState<Face>(Face.smile);
 const [time, setTime] = useState<number>(0);
 const [live, setLive] = useState<boolean>(false);
-const [bombCounter, setBombCounter] = useState<number>(10);
+const [bombCounter, setBombCounter] = useState<number>(NO_OF_BOMBS);
 const [hasLost, setHasLost] = useState<boolean>(false);
 const [hasWon, setHasWon] = useState<boolean>(false);
+const [classBody, setclassBody]=useState<string>('Body-beginner')
+
+
 
 // Controls EventListeners 
 useEffect(() => {
@@ -37,6 +42,45 @@ useEffect(() => {
 
     };
   }, []);
+
+// set up grid and numer of bombs according to selected level - beginner is default
+  useEffect(() => {
+    if (level === 'beginner'){
+      setclassBody('Body-beginner');
+      setMAX_COLS(9);
+      setMAX_ROWS(9)
+      setNO_OF_BOMBS(10)
+    }
+    if (level === 'intermediate'){
+      setclassBody('Body-intermediate')
+      setMAX_COLS(16);
+      setMAX_ROWS(16)
+      setNO_OF_BOMBS(40) 
+    }
+    if (level === 'advanced'){
+      setclassBody('Body-advanced')
+      setMAX_COLS(16);
+      setMAX_ROWS(30)
+      setNO_OF_BOMBS(99) 
+    }
+   
+  }, [level])
+
+  useEffect(() => {
+    handleFaceClick()
+    console.log(cells)
+  }, [NO_OF_BOMBS])
+
+
+  // Reset Game -> 🤓
+  const handleFaceClick = (): void => {
+    setLive(false);
+    setTime(0);
+    setBombCounter(NO_OF_BOMBS)
+    setCells(generateCells(MAX_ROWS, MAX_COLS, NO_OF_BOMBS));
+    setHasLost(false);
+    setHasWon(false);
+  };
 
 
 
@@ -93,7 +137,7 @@ useEffect(() => {
 
     // 3. if empty is clicked -> reveal all empty cells
     } else if (currentCell.value === CellValue.none) {
-      newCells = openMultipleCells(newCells, rowParam, colParam);
+      newCells = openMultipleCells(newCells, rowParam, colParam, MAX_ROWS, MAX_COLS);
     } else {
     
     // 4. if a number is clicked -> reveal the number
@@ -179,15 +223,6 @@ const handleCellContext = (
       }
 }
 
-  // Reset Game -> 🤓
-  const handleFaceClick = (): void => {
-    setLive(false);
-    setTime(0);
-    setBombCounter(NO_OF_BOMBS)
-    setCells(generateCells());
-    setHasLost(false);
-    setHasWon(false);
-  };
 
   // Create matrix
 const renderCells = (): React.ReactNode => {
@@ -220,11 +255,16 @@ const showAllBombs = (): Cell[][] => {
   );
 }
 
+
+
+
+
 return {
     bombCounter,
     handleFaceClick,
     face,
     time,
     renderCells,
+    classBody
 }
 }
